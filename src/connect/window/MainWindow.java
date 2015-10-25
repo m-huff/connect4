@@ -21,10 +21,10 @@ public class MainWindow extends JFrame implements Runnable {
 	int ysize = -1;
 	Image image;
 	Graphics2D g;
-	
+
 	private static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
 	private static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
-	
+
 	private static final int CENTER_X = (SCREEN_WIDTH / 2) - (WINDOW_WIDTH / 2);
 	private static final int CENTER_Y = (SCREEN_HEIGHT / 2) - (WINDOW_HEIGHT / 2);
 
@@ -38,7 +38,7 @@ public class MainWindow extends JFrame implements Runnable {
 
 	int delay = 0;
 	int time = 0;
-	
+
 	int score1;
 	int score2;
 
@@ -64,7 +64,7 @@ public class MainWindow extends JFrame implements Runnable {
 
 	WinDirection winDirection;
 	int piecesOnBoard;
-	
+
 	private final MainWindow deeznuts = this;
 
 	public MainWindow() {
@@ -75,7 +75,7 @@ public class MainWindow extends JFrame implements Runnable {
 		setIconImage(icon.getImage());
 		setTitle("Connect 4");
 		setLocation(CENTER_X, CENTER_Y);
-		
+
 		addKeyListener(new KeyAdapter() {
 
 			@SuppressWarnings("static-access")
@@ -91,23 +91,17 @@ public class MainWindow extends JFrame implements Runnable {
 				repaint();
 			}
 		});
-		
+
 		init();
 		start();
 	}
 
 	Thread relaxer;
 
-	////////////////////////////////////////////////////////////////////////////
 	public void init() {
 		requestFocus();
 	}
 
-	////////////////////////////////////////////////////////////////////////////
-	public void destroy() {
-	}
-
-	////////////////////////////////////////////////////////////////////////////
 	public void paint(Graphics gOld) {
 		if (image == null || xsize != getSize().width || ysize != getSize().height) {
 			xsize = getSize().width;
@@ -117,19 +111,8 @@ public class MainWindow extends JFrame implements Runnable {
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		}
 
-		//fill background
 		g.setColor(Color.black);
-
 		g.fillRect(0, 0, xsize, ysize);
-
-		int x[] = {getX(0), getX(getWidth2()), getX(getWidth2()), getX(0), getX(0) };
-		int y[] = {getY(0), getY(0), getY(getHeight2()), getY(getHeight2()), getY(0) };
-		//fill border
-		g.setColor(Color.black);
-		g.fillPolygon(x, y, 4);
-		// draw border
-		g.setColor(Color.black);
-		g.drawPolyline(x, y, 5);
 
 		if (animateFirstTime) {
 			gOld.drawImage(image, 0, 0, null);
@@ -149,7 +132,7 @@ public class MainWindow extends JFrame implements Runnable {
 
 			}
 		}
-		
+
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", Font.BOLD, 42));
 		g.drawString("Connect 4", 30, 80);
@@ -161,13 +144,11 @@ public class MainWindow extends JFrame implements Runnable {
 		gOld.drawImage(image, 0, 0, null);
 	}
 
-	////////////////////////////////////////////////////////////////////////////
-	// needed for     implement runnable
 	public void run() {
 		while (true) {
 			animate();
 			repaint();
-			double seconds = 0.03;//time that 1 frame takes.
+			double seconds = 0.03;
 			int miliseconds = (int) (1000.0 * seconds);
 			try {
 				Thread.sleep(miliseconds);
@@ -176,7 +157,6 @@ public class MainWindow extends JFrame implements Runnable {
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////////
 	public void reset() {
 		board = new Piece[numRows][numColumns];
 
@@ -189,7 +169,6 @@ public class MainWindow extends JFrame implements Runnable {
 		fallingPiece = null;
 	}
 
-	/////////////////////////////////////////////////////////////////////////
 	public void animate() {
 
 		if (animateFirstTime) {
@@ -216,8 +195,7 @@ public class MainWindow extends JFrame implements Runnable {
 			fallingPiece = null;
 			falling = 0;
 		}
-		
-		
+
 		if (fallingPiece == null && falling == 0 && delay == 5) {
 			int col = rand.nextInt(numRows);
 			boolean addPiece = false;
@@ -233,11 +211,10 @@ public class MainWindow extends JFrame implements Runnable {
 				}
 			}
 			delay = 0;
-		}
-		else {
+		} else {
 			delay++;
 		}
-		
+
 		if (time > 200) {
 			for (int zrow = 0; zrow < numRows; zrow++) {
 				for (int zcolumn = 0; zcolumn < numColumns; zcolumn++) {
@@ -247,10 +224,10 @@ public class MainWindow extends JFrame implements Runnable {
 			}
 			time = 0;
 		}
-		
+
 		time++;
 	}
-	////////////////////////////////////////////////////////////////////////////
+
 	public void start() {
 		if (relaxer == null) {
 			relaxer = new Thread(this);
@@ -258,7 +235,6 @@ public class MainWindow extends JFrame implements Runnable {
 		}
 	}
 
-	////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("deprecation")
 	public void stop() {
 		if (relaxer.isAlive()) {
@@ -267,7 +243,6 @@ public class MainWindow extends JFrame implements Runnable {
 		relaxer = null;
 	}
 
-	/////////////////////////////////////////////////////////////////////////
 	public int getX(int x) {
 		return (x + XBORDER + WINDOW_BORDER);
 	}

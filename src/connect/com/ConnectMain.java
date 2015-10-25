@@ -1,6 +1,5 @@
 package connect.com;
 
-import connect.window.Connect4Window;
 import connect.window.MainWindow;
 
 public class ConnectMain {

@@ -21,10 +21,10 @@ public class Connect4Window extends JFrame implements Runnable {
 	int ysize = -1;
 	Image image;
 	Graphics2D g;
-	
+
 	private static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
 	private static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
-	
+
 	private static final int CENTER_X = (SCREEN_WIDTH / 2) - (WINDOW_WIDTH / 2);
 	private static final int CENTER_Y = (SCREEN_HEIGHT / 2) - (WINDOW_HEIGHT / 2);
 
@@ -61,7 +61,7 @@ public class Connect4Window extends JFrame implements Runnable {
 
 	WinDirection winDirection;
 	int piecesOnBoard;
-	
+
 	private final Connect4Window deeznuts = this;
 
 	public Connect4Window() {
@@ -138,16 +138,10 @@ public class Connect4Window extends JFrame implements Runnable {
 
 	Thread relaxer;
 
-	////////////////////////////////////////////////////////////////////////////
 	public void init() {
 		requestFocus();
 	}
 
-	////////////////////////////////////////////////////////////////////////////
-	public void destroy() {
-	}
-
-	////////////////////////////////////////////////////////////////////////////
 	public void paint(Graphics gOld) {
 		if (image == null || xsize != getSize().width || ysize != getSize().height) {
 			xsize = getSize().width;
@@ -157,35 +151,12 @@ public class Connect4Window extends JFrame implements Runnable {
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		}
 
-		//fill background
 		g.setColor(Color.black);
-
 		g.fillRect(0, 0, xsize, ysize);
-
-		int x[] = {getX(0), getX(getWidth2()), getX(getWidth2()), getX(0), getX(0) };
-		int y[] = {getY(0), getY(0), getY(getHeight2()), getY(getHeight2()), getY(0) };
-		//fill border
-		g.setColor(Color.white);
-		g.fillPolygon(x, y, 4);
-		// draw border
-		g.setColor(Color.black);
-		g.drawPolyline(x, y, 5);
 
 		if (animateFirstTime) {
 			gOld.drawImage(image, 0, 0, null);
 			return;
-		}
-
-		g.setColor(Color.gray);
-		//horizontal lines
-		for (int zi = 1; zi < numRows; zi++) {
-			g.drawLine(getX(0), getY(0) + zi * getHeight2() / numRows, getX(getWidth2()),
-					getY(0) + zi * getHeight2() / numRows);
-		}
-		//vertical lines
-		for (int zi = 1; zi < numColumns; zi++) {
-			g.drawLine(getX(0) + zi * getWidth2() / numColumns, getY(0), getX(0) + zi * getWidth2() / numColumns,
-					getY(getHeight2()));
 		}
 
 		for (int zrow = 0; zrow < numRows; zrow++) {
@@ -208,11 +179,6 @@ public class Connect4Window extends JFrame implements Runnable {
 
 			}
 		}
-
-		//Get down mr president
-		//        if (winState != WinState.None) {
-		//            g.drawImage(new ImageIcon(Connect4.class.getResource("/connectthat/assets/donaldtrump.gif")).getImage(), -100, 0, xsize + 200, ysize, this);
-		//        }
 
 		if (winState == WinState.PlayerOne) {
 			g.setColor(Color.darkGray);
@@ -245,13 +211,11 @@ public class Connect4Window extends JFrame implements Runnable {
 		gOld.drawImage(image, 0, 0, null);
 	}
 
-	////////////////////////////////////////////////////////////////////////////
-	// needed for     implement runnable
 	public void run() {
 		while (true) {
 			animate();
 			repaint();
-			double seconds = 0.03;//time that 1 frame takes.
+			double seconds = 0.03;
 			int miliseconds = (int) (1000.0 * seconds);
 			try {
 				Thread.sleep(miliseconds);
@@ -260,7 +224,6 @@ public class Connect4Window extends JFrame implements Runnable {
 		}
 	}
 
-	/////////////////////////////////////////////////////////////////////////
 	public void reset() {
 		board = new Piece[numRows][numColumns];
 
@@ -273,7 +236,6 @@ public class Connect4Window extends JFrame implements Runnable {
 		fallingPiece = null;
 	}
 
-	/////////////////////////////////////////////////////////////////////////
 	public void animate() {
 
 		if (animateFirstTime) {
@@ -303,7 +265,6 @@ public class Connect4Window extends JFrame implements Runnable {
 		}
 	}
 
-	////////////////////////////////////////////////////////////////////////////
 	public boolean checkWin() {
 		//check horizontal.
 		int startColumn = currentColumn - (CONNECT_NUM - 1);
@@ -501,7 +462,6 @@ public class Connect4Window extends JFrame implements Runnable {
 		return (false);
 	}
 
-	////////////////////////////////////////////////////////////////////////////
 	public void start() {
 		if (relaxer == null) {
 			relaxer = new Thread(this);
@@ -509,7 +469,6 @@ public class Connect4Window extends JFrame implements Runnable {
 		}
 	}
 
-	////////////////////////////////////////////////////////////////////////////
 	@SuppressWarnings("deprecation")
 	public void stop() {
 		if (relaxer.isAlive()) {
@@ -518,7 +477,6 @@ public class Connect4Window extends JFrame implements Runnable {
 		relaxer = null;
 	}
 
-	/////////////////////////////////////////////////////////////////////////
 	public int getX(int x) {
 		return (x + XBORDER + WINDOW_BORDER);
 	}
