@@ -61,6 +61,8 @@ public class Connect4Window extends JFrame implements Runnable {
 
 	WinDirection winDirection;
 	int piecesOnBoard;
+	
+	private final Connect4Window deeznuts = this;
 
 	public Connect4Window() {
 
@@ -101,9 +103,9 @@ public class Connect4Window extends JFrame implements Runnable {
 					}
 					if (currentRow >= 0) {
 						if (playerOnesTurn)
-							board[currentRow][currentColumn] = new Piece(Color.red, rand.nextInt(5) + 1);
+							board[currentRow][currentColumn] = new Piece(Color.red);
 						else
-							board[currentRow][currentColumn] = new Piece(Color.black, rand.nextInt(5) + 1);
+							board[currentRow][currentColumn] = new Piece(Color.black);
 						falling = getHeight2() / numColumns * currentRow;
 						fallingPiece = board[currentRow][currentColumn];
 						playerOnesTurn = !playerOnesTurn;
@@ -120,7 +122,8 @@ public class Connect4Window extends JFrame implements Runnable {
 			@SuppressWarnings("static-access")
 			public void keyPressed(KeyEvent e) {
 				if (e.VK_ESCAPE == e.getKeyCode()) {
-					reset();
+					final MainWindow mw = new MainWindow();
+					deeznuts.dispose();
 				}
 				if (e.VK_Q == e.getKeyCode()) {
 					//TODO - config window

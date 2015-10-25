@@ -4,7 +4,7 @@ import java.awt.*;
 public class Piece {
     private Color color;
     
-    public Piece(Color _color, int _value)
+    public Piece(Color _color)
     {
         color = _color;
     }
