@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.util.Random;
 import javax.swing.*;
 
+import connect.com.ConfigLoader;
 import connect.com.Piece;
 
 @SuppressWarnings("serial")
@@ -39,13 +40,25 @@ public class Connect4Window extends JFrame implements Runnable {
 	int score1;
 	int score2;
 
-	static int CONNECT_NUM = 4;
+	static int CONNECT_NUM = ConfigLoader.connectNum;
 
 	Piece fallingPiece;
 	int falling;
 
 	public static Random rand = new Random();
 	public static ImageIcon icon = new ImageIcon(Connect4Window.class.getResource("/connect/assets/icon.png"));
+	
+	public String[] tips = {"Make use of diagonals against a tricky opponent!",
+							"In the configuration menu, you can configure game rules!",
+							"Try shoving your entire fist up your asshole!",
+							"If the entire board is filled up, it's a tie!",
+							"You can't place a piece while your opponent's is falling!",
+							"The ESC key will reset the game when somebody has won!",
+							"The display at the top will will you how many wins you have!",
+							"Check whose turn it is with the display above the board!",
+							"Try looking up strategies for connect 4 to frustrate your opponent!",
+							"Be aware of any wins your opponent can take after your move!",
+							"Anticipate your opponent's next move and use it to your advantage!",};
 
 	enum WinState {
 		None, PlayerOne, PlayerTwo, Tie
@@ -54,6 +67,9 @@ public class Connect4Window extends JFrame implements Runnable {
 	WinState winState;
 	int winRow;
 	int winColumn;
+	
+	int time = 0;
+	int currentTipIndex = 0;
 
 	enum WinDirection {
 		Horizontal, Vertical, DiagonalUp, DiagonalDown
@@ -207,6 +223,11 @@ public class Connect4Window extends JFrame implements Runnable {
 
 		g.setColor(Color.white);
 		g.drawString("Player " + (playerOnesTurn ? "1" : "2") + "'s Turn", 220, 45);
+		
+		g.setColor(Color.darkGray);
+		g.fillRect(28, 577, 497, 39);
+		g.setColor(Color.white);
+		g.drawString(tips[currentTipIndex], 35, 590);
 
 		gOld.drawImage(image, 0, 0, null);
 	}
@@ -262,6 +283,14 @@ public class Connect4Window extends JFrame implements Runnable {
 		if (falling < fallSpeed - 1) {
 			fallingPiece = null;
 			falling = 0;
+		}
+		
+		if (time < 150) {
+			time++;
+		}
+		else {
+			currentTipIndex = rand.nextInt(tips.length);
+			time = 0;
 		}
 	}
 

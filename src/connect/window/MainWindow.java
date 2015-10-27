@@ -81,11 +81,11 @@ public class MainWindow extends JFrame implements Runnable {
 			@SuppressWarnings("static-access")
 			public void keyPressed(KeyEvent e) {
 				if (e.VK_X == e.getKeyCode()) {
-					final Connect4Window c4w = new Connect4Window();
+					new Connect4Window();
 					deeznuts.dispose();
 				}
 				if (e.VK_Q == e.getKeyCode()) {
-					//TODO - config window
+					new ConfigWindow();
 				}
 
 				repaint();
